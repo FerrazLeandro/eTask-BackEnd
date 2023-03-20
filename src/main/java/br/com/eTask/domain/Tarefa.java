@@ -35,7 +35,7 @@ public class Tarefa {
 	
 	@NotNull
 	@Column(name = "status", length = 50)
-	private String status;
+	private Integer status;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario", nullable = false)
@@ -51,7 +51,7 @@ public class Tarefa {
 		super();
 	}
 
-	public Tarefa(Long id, String titulo, String descricao, LocalDate criacao, String status, Usuario usuario) {
+	public Tarefa(Long id, String titulo, String descricao, LocalDate criacao, Integer status, Usuario usuario) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
@@ -93,11 +93,11 @@ public class Tarefa {
 		this.criacao = criacao;
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

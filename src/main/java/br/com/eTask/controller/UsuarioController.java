@@ -25,16 +25,16 @@ import jakarta.validation.Valid;
 public class UsuarioController {
 	
 	@Autowired
-	UsuarioRepository UsuarioRepository;
+	UsuarioRepository usuarioRepository;
 	
 	@GetMapping
 	public ResponseEntity<List<Usuario>> buscar() {
-		return ResponseEntity.ok(UsuarioRepository.findAll());
+		return ResponseEntity.ok(usuarioRepository.findAll());
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
-		Optional<Usuario> Usuario = UsuarioRepository.findById(id);
+	@GetMapping("/{email}")
+	public ResponseEntity<Usuario> buscarPorEmail(@PathVariable String email) {
+		Optional<Usuario> Usuario = usuarioRepository.findByEmail(email);
 		if (!Usuario.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
@@ -43,7 +43,7 @@ public class UsuarioController {
 	
 	@PostMapping
 	public ResponseEntity<Usuario> inserir(@Valid @RequestBody Usuario Usuario) {
-		Usuario = UsuarioRepository.save(Usuario);
+		Usuario = usuarioRepository.save(Usuario);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(Usuario.getId())
 				.toUri();
 		return ResponseEntity.created(uri).body(Usuario);
@@ -51,22 +51,22 @@ public class UsuarioController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario Usuario) {
-		Optional<Usuario> UsuarioBanco = UsuarioRepository.findById(id);
+		Optional<Usuario> UsuarioBanco = usuarioRepository.findById(id);
 		if (!UsuarioBanco.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
 		Usuario.setId(id);
-		Usuario = UsuarioRepository.save(Usuario);
+		Usuario = usuarioRepository.save(Usuario);
 		return ResponseEntity.ok(Usuario);
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> excluir(@PathVariable Long id) {
-		Optional<Usuario> UsuarioBanco = UsuarioRepository.findById(id);
+		Optional<Usuario> UsuarioBanco = usuarioRepository.findById(id);
 		if (!UsuarioBanco.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
-		UsuarioRepository.deleteById(id);
+		usuarioRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 }
